@@ -242,6 +242,7 @@ const Azan = GObject.registerClass(
             this._updateAutoLocation();
             this._opt_latitude = this._settings.get_double('latitude');
             this._opt_longitude = this._settings.get_double('longitude');
+            this._opt_panel_position = this._settings.get_int('panel-position');
             this._opt_timeformat12 = this._settings.get_boolean('time-format-12');
             this._opt_timezone = this._settings.get_int('timezone');
             this._opt_concise_list = this._settings.get_int('concise-list');
@@ -284,6 +285,10 @@ const Azan = GObject.registerClass(
             this._settings.connect('changed::' + 'longitude', (settings, key) => {
                 this._opt_longitude = settings.get_double(key);
 
+                this._updateLabel();
+            });
+            this._settings.connect('changed::' + 'panel-position', (settings, key) => {
+                this._opt_panel_position = settings.get_int(key);
                 this._updateLabel();
             });
             this._settings.connect('changed::' + 'time-format-12', (settings, key) => {
@@ -453,6 +458,7 @@ const Azan = GObject.registerClass(
             this._updateIslamicDate();
             this._handlePrayerNotifications(isAfterAzan, minDiffMinutes, nearestPrayerId, timesStr);
             this._updateIndicatorText(isTimeForPraying, isAfterAzan, minDiffMinutes, nearestPrayerId);
+            this._updateLabelPosition();
         }
 
         _updateIslamicDate() {
@@ -482,6 +488,22 @@ const Azan = GObject.registerClass(
             } else {
                 this.indicatorText.set_text(this._timeNames[nearestPrayerId] + ' -' + this._formatRemainingTimeFromMinutes(minDiffMinutes));
             }
+        }
+
+        _updateLabelPosition() {
+            delete Main.panel.statusArea['azan'];
+            let position;
+            switch (this._opt_panel_position) {
+                case 1:
+                    position = 'left';
+                    break;
+                case 2:
+                    position = 'right';
+                    break;
+                default:
+                    position = 'center';
+            }
+            Main.panel.addToStatusArea('azan', this, 1, position);
         }
 
 

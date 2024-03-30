@@ -126,6 +126,10 @@ class Settings {
             title: _("Timezone"),
             model: this.#timezoneOptions()
         });
+        this.field_panel_position = new Adw.ComboRow({
+            title: _("Panel position"),
+            model: this.#labelPositionOptions()
+        })
         this.field_which_times_mode = new Adw.ComboRow({
             title: _("Which times?"),
             model: this.#whichTimesOptions()
@@ -153,6 +157,7 @@ class Settings {
         this.locationGroup.add(this.field_longitude);
 
         this.displayGroup = new Adw.PreferencesGroup({ title: _('Display') });
+        this.displayGroup.add(this.field_panel_position);
         this.displayGroup.add(this.field_time_format_12_toggle);
         this.displayGroup.add(this.field_which_times_mode);
         
@@ -175,6 +180,11 @@ class Settings {
         this.schema.bind('auto-location',
             this.field_auto_location_toggle,
             'active',
+            Gio.SettingsBindFlags.DEFAULT
+        );
+        this.schema.bind('panel-position',
+            this.field_panel_position,
+            'selected',
             Gio.SettingsBindFlags.DEFAULT
         );
         this.schema.bind('time-format-12',
@@ -325,6 +335,19 @@ class Settings {
             _("GMT +12:00"),
             _("GMT +13:00"),
             _("GMT +14:00")
+        ];
+        let list = new Gtk.StringList();
+        for (let option of options) {
+            list.append(option)
+        }
+        return list;
+    }
+
+    #labelPositionOptions() {
+        let options = [
+            _("Center"),
+            _("Left"),
+            _("Right")
         ];
         let list = new Gtk.StringList();
         for (let option of options) {
