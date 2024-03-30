@@ -128,7 +128,7 @@ class Settings {
         });
         this.field_panel_position = new Adw.ComboRow({
             title: _("Panel position"),
-            model: this.#labelPositionOptions()
+            model: this.#panelPositionOptions()
         })
         this.field_which_times_mode = new Adw.ComboRow({
             title: _("Which times?"),
@@ -343,7 +343,7 @@ class Settings {
         return list;
     }
 
-    #labelPositionOptions() {
+    #panelPositionOptions() {
         let options = [
             _("Center"),
             _("Left"),

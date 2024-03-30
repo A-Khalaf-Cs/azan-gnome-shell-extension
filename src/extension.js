@@ -458,7 +458,7 @@ const Azan = GObject.registerClass(
             this._updateIslamicDate();
             this._handlePrayerNotifications(isAfterAzan, minDiffMinutes, nearestPrayerId, timesStr);
             this._updateIndicatorText(isTimeForPraying, isAfterAzan, minDiffMinutes, nearestPrayerId);
-            this._updateLabelPosition();
+            this._updatePanelPosition();
         }
 
         _updateIslamicDate() {
@@ -490,7 +490,7 @@ const Azan = GObject.registerClass(
             }
         }
 
-        _updateLabelPosition() {
+        _updatePanelPosition() {
             delete Main.panel.statusArea['azan'];
             let position;
             switch (this._opt_panel_position) {
